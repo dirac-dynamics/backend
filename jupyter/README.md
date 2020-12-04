@@ -12,7 +12,7 @@ Happy coding! :-)
 
 In order to work on the notebook, please build & run the docker container with the following commands.
 
-*Build Container*
+### Build Container
 
 This step is necessary the first time you start working _and_ every time you make changes on the `requirements.txt`!
 
@@ -20,17 +20,17 @@ This step is necessary the first time you start working _and_ every time you mak
 docker build -t diracdynamics/prototyping .
 ```
 
-*Run Container*
+### Run Container
 
 When you have built the latest version of the container, execute it with the following command:
 
-On Mac, Linux, Powershell (Windows):
+- On Mac, Linux, Windows Powershell:
 
 ```
 docker run -p 8888:8888 -v ${PWD}/notebooks:/src/notebooks diracdynamics/prototyping
 ```
 
-On Windows:
+- On Windows no Powershell:
 
 ```
 docker run -p 8888:8888 -v %cd%/notebooks:/src/notebooks diracdynamics/prototyping
