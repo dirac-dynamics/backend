@@ -24,8 +24,16 @@ docker build -t diracdynamics/prototyping .
 
 When you have built the latest version of the container, execute it with the following command:
 
+On Mac, Linux, Powershell (Windows):
+
 ```
 docker run -p 8888:8888 -v ${PWD}/notebooks:/src/notebooks diracdynamics/prototyping
+```
+
+On Windows:
+
+```
+docker run -p 8888:8888 -v %cd%/notebooks:/src/notebooks diracdynamics/prototyping
 ```
 
 This will start a docker container running the Jupyter notebook. The address of the server will be shown in the cli.
