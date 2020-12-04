@@ -4,6 +4,10 @@ The Jupyter notebooks are intended to speed up prototyping. In order to have a c
 
 Happy coding! :-)
 
+## Prerequisites
+
+* Docker
+
 ## Run Jupyter
 
 In order to work on the notebook, please build & run the docker container with the following commands.
@@ -25,10 +29,6 @@ docker run -p 8888:8888 -v ${PWD}/notebooks:/src/notebooks diracdynamics/prototy
 ```
 
 This will start a docker container running the Jupyter notebook. The address of the server will be shown in the cli.
-
-## Prerequisites
-
-* Docker
 
 ## Troubleshooting
 
