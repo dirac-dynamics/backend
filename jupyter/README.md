@@ -40,4 +40,4 @@ This will start a docker container running the Jupyter notebook. The address of 
 
 ## Troubleshooting
 
-- If you are using Mac and have problems accessing the notebooks in the browser, pleaske make sure you have [Desktop for Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac/) installed. [This](https://forums.docker.com/t/port-forward-not-working-on-a-macos-installation-but-works-on-others/77401/6) might be your issue
+- If you are using Mac and have problems accessing the notebooks in the browser, pleaske make sure you have [Desktop for Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac/) installed. [This](https://forums.docker.com/t/port-forward-not-working-on-a-macos-installation-but-works-on-others/77401/6) might be your issue.
