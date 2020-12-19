@@ -20,19 +20,17 @@ import networkx as nx
 
 start_time = time.process_time()
 
-#'["highway"~"motorway|trunk|primary|secondary"]'
+#download and build graph
+G = ox.graph_from_place({'state':'NRW','country':'Germany'},custom_filter='["highway"~"motorway|trunk|primary|secondary"]')
+#ox.plot_graph(G)
 
-G = ox.graph_from_place({'state':'NRW','country':'Germany'},custom_filter='["highway"~"motorway|trunk|primary|secondary"]')#["highway"!~"motorway_link|trunk_link"]
-
-#G = nx.convert_node_labels_to_integers(G)
-#node_info = G.nodes
-ox.plot_graph(G)
-
+#claculate and add traveltimes to edges
 speed_dict = {'motorway' : 80, 'trunk' : 80, 'primary' : 70, 'secondary' : 50, 'motorway_link' : 50, 'trunk_link' : 50, 'primary_link' : 50, 'secondary_link' : 50}
 
 ox.speed.add_edge_speeds(G, hwy_speeds=speed_dict, fallback=50, precision=1)
 ox.speed.add_edge_travel_times(G, precision=1)
 
+#build new graph without dead ends
 G_proj = ox.project_graph(G)
 G2 = ox.consolidate_intersections(G_proj, rebuild_graph=True, tolerance=1, dead_ends=False)
 ox.plot_graph(G2)
@@ -87,7 +85,7 @@ for i in range(len(carriers)):
     counter=0
     for j in range(len(transportables)):
         if (ox.distance.euclidean_dist_vec(node_info[carriers[i]]['y'],node_info[carriers[i]]['x'],
-                                           node_info[transportables[j]]['y'],node_info[transportables[j]]['x'])) <= 0.75e+05:
+                                           node_info[transportables[j]]['y'],node_info[transportables[j]]['x'])) <= 0.75e+05:#euclidian distance is unit of x,y coords
             #print(ox.distance.euclidean_dist_vec(node_info[carriers[i]]['y'],node_info[carriers[i]]['x'],
             #                               node_info[transportables[j]]['y'],node_info[transportables[j]]['x']))
             connection_list.append(j+1+carrier_number)
@@ -108,6 +106,8 @@ for i in range(len(carriers)):
     
 
 print("Time =", time.process_time() - start_time, "seconds")
+
+start_time = time.process_time()
 
 def main(n_carrier,n_transportables,weights,connections,n_connections):
   """Solving an Assignment Problem with MinCostFlow"""
@@ -214,4 +214,4 @@ ox.plot.plot_graph_routes(G2,routes_to_plot,route_colors='w', show=True, close=F
 
 print("Time =", time.process_time() - start_time, "seconds")
 
-print(end_list)
+#print(end_list)
