@@ -4,6 +4,7 @@ from django.db import migrations
 
 # Create your models here.
 
+
 class Migration(migrations.Migration):
 
     operations = [
