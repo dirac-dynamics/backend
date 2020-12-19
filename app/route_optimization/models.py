@@ -1,12 +1,10 @@
-from django.contrib.gis.db import models
-from django.contrib.postgres.operations import CreateExtension
-from django.db import migrations
+from django.db import models
+from django.contrib.gis.db.models import PointField
 
 # Create your models here.
+class Carrier(models.Model):
+    position = PointField()
 
-
-class Migration(migrations.Migration):
-
-    operations = [
-        CreateExtension('postgis'),
-    ]
+class Transportable(models.Model):
+    position = PointField()
+    destination = PointField()
