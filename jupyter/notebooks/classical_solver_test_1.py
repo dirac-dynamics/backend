@@ -19,15 +19,9 @@ ox.__version__
 import networkx as nx
 
 start_time = time.process_time()
-"""
-highway_filter = (f'["highway"]["area"!~"yes"]["highway"!~"cycleway|footway|path|pedestrian|steps|track|corridor|'
-                  f'elevator|escalator|proposed|construction|bridleway|abandoned|platform|raceway|service|road|escape|living_street"]'
-                  f'["motor_vehicle"!~"no"]["motorcar"!~"no"]{settings.default_access}'
-                  f'["service"!~"parking|parking_aisle|driveway|private|emergency_access"]'
-                  )
-"""
+
 #initialise graph
-G = ox.graph.graph_from_point([50.77543745,6.083803247551902],dist=3000,network_type='drive')#50.7956494,6.124171562344905
+G = ox.graph.graph_from_point([50.77543745,6.083803247551902],dist=3000,network_type='drive')
 G = nx.convert_node_labels_to_integers(G)
 node_info = G.nodes
 
@@ -66,7 +60,7 @@ for i in range(len(carriers)):
     counter=0
     for j in range(len(transportables)):
         if (ox.distance.euclidean_dist_vec(node_info[carriers[i]]['y'],node_info[carriers[i]]['x'],
-                                           node_info[transportables[j]]['y'],node_info[transportables[j]]['x'])) <= 1:
+                                           node_info[transportables[j]]['y'],node_info[transportables[j]]['x'])) <= 1:#euclidian distance is in lng,lat degrees
             #print(ox.distance.euclidean_dist_vec(node_info[carriers[i]]['y'],node_info[carriers[i]]['x'],
             #                               node_info[transportables[j]]['y'],node_info[transportables[j]]['x']))
             connection_list.append(j+1+carrier_number)
@@ -76,7 +70,6 @@ for i in range(len(carriers)):
             way_weight=0
             for k in range(len(way)-1):
                 way_weight += G[way[k]][way[k+1]][0]['length']
-                print(G[way[k]][way[k+1]])
             weight_list.append(way_weight)
             counter+=1
     
@@ -85,7 +78,6 @@ for i in range(len(carriers)):
     route_list.append(ways_to_transportables)
     
 
-print(node_info[433])
 
 print("Time =", time.process_time() - start_time, "seconds")
 
