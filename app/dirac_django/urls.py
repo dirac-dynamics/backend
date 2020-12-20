@@ -21,6 +21,7 @@ from route_optimization import views
 router =routers.DefaultRouter()
 router.register(r'transportables', views.TransportableViewSet)
 router.register(r'carriers', views.CarrierViewSet)
+router.register(r'match', views.MatcherViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
