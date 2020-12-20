@@ -2,6 +2,7 @@ from .models import Carrier, Transportable, Matching
 from .serializers import CarrierSerializer, TransportableSerializer, MatchingSerializer
 from rest_framework import views, viewsets
 from rest_framework import permissions
+from rest_framework.response import Response
 
 
 class CarrierViewSet(viewsets.ModelViewSet):
@@ -27,6 +28,13 @@ class MatcherViewSet(viewsets.ModelViewSet):
     queryset =  Matching.objects.all()
     serializer_class = MatchingSerializer
     permission_classes = [permissions.AllowAny]
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
+        carriers = Carrier.objects.all().order_by('id')
+        transportables = Transportable.objects.all().order_by('id')
+
+        carrier_positions = [c.position.coords for c in carriers]
+        transportable_positions = [t.position.coords for t in transportables]
+
         # optimization goes here
-        return {}
+
+        return Response({'yes':'no'})
