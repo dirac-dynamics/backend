@@ -4,9 +4,9 @@ from rest_framework import serializers
 class TransportableSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Transportable
-        fields = ['position', 'destination']
+        fields = ['id','position','receiver','sender']
 
 class CarrierSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Carrier
-        fields = ['position']
+        fields = ['id','position','phone','driver','plate_number']
