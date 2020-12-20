@@ -9,13 +9,34 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+RUN apk --no-cache \
+        update \
+        --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+        postgresql-client \
+        libpq \
+        && apk add --no-cache \
+               --upgrade \
+               --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+               --virtual .build-deps \
+        postgresql-dev \
+        zlib-dev jpeg-dev \ 
+        alpine-sdk \
+        && apk add --no-cache \
+               --upgrade \
+               --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        geos \
+        proj \
+        gdal \
+        binutils \
+        && ln -s /usr/lib/libproj.so.15 /usr/lib/libproj.so \
+        && ln -s /usr/lib/libgdal.so.20 /usr/lib/libgdal.so \
+        && ln -s /usr/lib/libgeos_c.so.1 /usr/lib/libgeos_c.so
 
 # install dependencies
-RUN pip install --upgrade pip
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN  python3 -m pip install --upgrade pip --no-cache-dir \
+     && python3 -m pip install -r requirements.txt --no-cache-dir \
+     && apk --purge del .build-deps
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh .
