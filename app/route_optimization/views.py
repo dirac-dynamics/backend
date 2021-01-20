@@ -4,7 +4,8 @@ from rest_framework import views, viewsets
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from .graph import create_from_city
+from .solvers import multisolver_osmnx, singlesolver_osmnx, greedy_singlesolver_osmnx
+from .setup import setup_osmnx
 
 
 
@@ -42,9 +43,9 @@ class MatcherViewSet(viewsets.ModelViewSet):
         print(transportable_positions)
 
         # optimization goes here
-        carrier_to_transportable_optimal, routes_optimal, carrier_to_transportable_greedy, routes_greedy  = create_from_city('Munich_2', 48.143743 + 0.05, 48.143743 - 0.05, 11.575942 + 0.10, 11.575942 - 0.10, len(carriers), len(transportables), random=False,carrier_list=carrier_positions, transportable_list=transportable_positions)
+        setup_dic = setup_osmnx('Munich_2', 48.143743 + 0.05, 48.143743 - 0.05, 11.575942 + 0.10, 11.575942 - 0.10, carrier_positions, transportable_positions, transportable_positions)
+        routes, durations, distances = singlesolver_osmnx(setup_dic)
 
-        return Response({'carrier_to_transport_optimal':carrier_to_transportable_optimal,
-                         'routes_optimal':routes_optimal,
-                         'carrier_to_transport_greedy':carrier_to_transportable_greedy,
-                         'routes_greedy':routes_greedy})
+        return Response({'routes':routes,
+                         'durations':durations,
+                         'distances':distances})
