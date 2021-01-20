@@ -11,3 +11,6 @@ class Transportable(models.Model):
     position = PointField()
     sender = models.CharField(max_length=200)
     receiver = models.CharField(max_length=200)
+
+class Matching(models.Model):
+    pass
