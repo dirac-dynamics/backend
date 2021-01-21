@@ -22,6 +22,7 @@ router =routers.DefaultRouter()
 router.register(r'transportables', views.TransportableViewSet)
 router.register(r'carriers', views.CarrierViewSet)
 router.register(r'match', views.MatcherViewSet)
+router.register(r'greedy', views.GreedyViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

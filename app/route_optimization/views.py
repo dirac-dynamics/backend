@@ -1,13 +1,19 @@
+import json
+import os
+
 from .models import Carrier, Transportable, Matching
 from .serializers import CarrierSerializer, TransportableSerializer, MatchingSerializer
 from rest_framework import views, viewsets
+from dirac_django.settings import BASE_DIR
 from rest_framework import permissions
 from rest_framework.response import Response
 
-from .solvers import multisolver_osmnx, singlesolver_osmnx, greedy_singlesolver_osmnx
-from .setup import setup_osmnx
+from .solvers_hardcode import singlesolver_osmnx, greedy_singlesolver_osmnx
+from .setup_data import carriers, targets, transportables, all_coord_routes, all_time, all_length, weight_list, connection_list_single, connection_number, weight_list_2, start_end_list
 
-
+maps_path = os.path.join(BASE_DIR, 'maps')
+import ast
+import time
 
 class CarrierViewSet(viewsets.ModelViewSet):
     """
@@ -33,18 +39,37 @@ class MatcherViewSet(viewsets.ModelViewSet):
     serializer_class = MatchingSerializer
     permission_classes = [permissions.AllowAny]
     def create(self, request, *args, **kwargs):
-        carriers = Carrier.objects.all().order_by('id')
-        transportables = Transportable.objects.all().order_by('id')
+        #carriers = Carrier.objects.all().order_by('id')
+        #transportables = Transportable.objects.all().order_by('id')
 
-        carrier_positions = [c.position.coords for c in carriers]
-        transportable_positions = [t.position.coords for t in transportables]
+        #carrier_positions = [c.position.coords for c in carriers]
+        #transportable_positions = [t.position.coords for t in transportables]
 
-        print(carrier_positions)
-        print(transportable_positions)
 
-        # optimization goes here
-        setup_dic = setup_osmnx('Munich_2', 48.143743 + 0.05, 48.143743 - 0.05, 11.575942 + 0.10, 11.575942 - 0.10, carrier_positions, transportable_positions, transportable_positions)
-        routes, durations, distances = singlesolver_osmnx(setup_dic)
+        routes, durations, distances = singlesolver_osmnx(carriers, targets, transportables, all_coord_routes, all_time, all_length, weight_list, connection_list_single, connection_number)
+
+        time.sleep(2)
+
+        return Response({'routes':routes,
+                         'durations':durations,
+                         'distances':distances})
+
+class GreedyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that triggers the greedy matching.
+    """
+    queryset =  Matching.objects.all()
+    serializer_class = MatchingSerializer
+    permission_classes = [permissions.AllowAny]
+    def create(self, request, *args, **kwargs):
+        #carriers = Carrier.objects.all().order_by('id')
+        #transportables = Transportable.objects.all().order_by('id')
+
+        #carrier_positions = [c.position.coords for c in carriers]
+        #transportable_positions = [t.position.coords for t in transportables]
+
+
+        routes, durations, distances = greedy_singlesolver_osmnx(carriers, targets, transportables, all_coord_routes, all_time, all_length, weight_list_2, start_end_list)
 
         return Response({'routes':routes,
                          'durations':durations,
