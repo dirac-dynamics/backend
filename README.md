@@ -1,18 +1,13 @@
 # Backend
 
-For prototyping, please refer to the [Jupyter folder](https://github.com/Dirac-Dynamics/backend/tree/main/jupyter).
-
-
-## Flush and Migrate the DB
-
-These commands are in the original `Dockerfile` in `/app` (commented out there).
+To run the backend (start before the frontend):
 
 ```
-$ docker-compose exec web python manage.py flush --no-input
-$ docker-compose exec web python manage.py migrate
+$ docker-compose up --build
 ```
 
-[Helpful link](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
+To stop the backend:
 
-
-To be continued...
+```
+$ docker-compose down -v
+```
